@@ -1,0 +1,40 @@
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+spring:
+  mvc:
+    static-path-pattern: /img/**
+  resources:
+    static-locations: file:D://upload/
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 500MB
+      max-request-size: 500MB
+  datasource:
+    master:
+      url: jdbc:oracle:thin:@192.168.3.90:1521:NANTONG
+      username: system
+      password: NTSchy123456
+      driver-class-name: oracle.jdbc.OracleDriver
+      type: com.zaxxer.hikari.HikariDataSource
+      hikari:
+        maximum-pool-size: 50
+    cluster:
+      - key: slave1
+        url: jdbc:oracle:thin:@192.168.3.90:1521:NANTONG
+        username: system
+        password: NTSchy123456
+        driver-class-name: oracle.jdbc.OracleDriver
+        type: com.zaxxer.hikari.HikariDataSource
+        hikari:
+          maximum-pool-size: 50
+    aop:
+      auto: true
+      proxy-target-class: true
+
+server:
+  port: 9599

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ntschy.tsc.dao.InvestmentDao">
+
+    <select id="getNantongGdp" resultType="com.ntschy.tsc.entity.DO.RegionalGdp">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS ROWNO, TEMP.*
+            FROM (
+                SELECT
+                    AREA,
+                    YEAR,
+                    SEASON,
+                    PRIMARY_INDUSTRY_ABS AS PRIMARY_INDUSTRY,
+                    SECONDARY_INDUSTRY_ABS AS SECONDARY_INDUSTRY,
+                    TERTIARY_INDUSTRY_ABS AS TERTIARY_INDUSTRY
+                FROM REGIONAL_GDP
+                WHERE AREA='南通'
+                ORDER BY YEAR DESC, GDP_ABS ASC
+            ) TEMP
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 8
+    </select>
+
+    <select id="getLastYear" resultType="java.lang.String">
+        SELECT MAX(YEAR) FROM REGIONAL_GDP
+    </select>
+
+    <select id="getSeasonCount" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT SEASON) FROM REGIONAL_GDP WHERE YEAR = #{year,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getRegionalGdp" resultType="com.ntschy.tsc.entity.DO.RegionalGdp">
+        SELECT
+            AREA,
+            YEAR,
+            SEASON,
+            PRIMARY_INDUSTRY_ABS AS PRIMARY_INDUSTRY,
+            SECONDARY_INDUSTRY_ABS AS SECONDARY_INDUSTRY,
+            TERTIARY_INDUSTRY_ABS AS TERTIARY_INDUSTRY
+        FROM REGIONAL_GDP
+        WHERE YEAR = #{year,jdbcType=VARCHAR} AND SEASON = #{season,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getRegionalComposition" resultType="com.ntschy.tsc.entity.DO.RegionalComposition">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS ROWNO, TEMP.*
+            FROM (
+                SELECT *
+                FROM COMPOSITION_REGIONAL_GDP
+                WHERE AREA='南通'
+                ORDER BY YEAR DESC
+            ) TEMP
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 5
+    </select>
+
+    <select id="getImportValue" resultType="com.ntschy.tsc.entity.DO.ImportValue">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS ROWNO, TEMP.*
+            FROM (
+                SELECT AREA, YEAR, MONTH, CURRENT_MONTH_ABS AS CURRENT_MONTH
+                FROM IMPORT_VALUE
+                WHERE AREA='南通'
+                ORDER BY YEAR DESC, MONTH DESC
+            ) TEMP
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 10
+    </select>
+
+    <select id="getNantongPopulation" resultType="com.ntschy.tsc.entity.DO.Population">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS ROWNO, TEMP.*
+            FROM (
+                SELECT AREA, YEAR, VALUE_ABS AS POPULATION
+                FROM POPULATION_VALUE
+                WHERE AREA='南通'
+                ORDER BY YEAR DESC
+            ) TEMP
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 10
+    </select>
+
+    <select id="getUrbanPopulation" resultType="com.ntschy.tsc.entity.DO.Population">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS ROWNO, TEMP.*
+            FROM (
+                SELECT AREA, YEAR, NUMERICAL_VALUE AS POPULATION
+                FROM POPULATION_URBAN
+                WHERE AREA='南通'
+                ORDER BY YEAR DESC
+            ) TEMP
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 10
+    </select>
+
+    <select id="getRegisterPopulation" resultType="com.ntschy.tsc.entity.DO.Population">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS ROWNO, TEMP.*
+            FROM (
+                SELECT AREA, YEAR, VALUE_ABS AS POPULATION
+                FROM POPULATION_VALUE_HJ
+                WHERE AREA='南通'
+                ORDER BY YEAR DESC
+            ) TEMP
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 10
+    </select>
+
+    <select id="getNewConstructionList" resultType="com.ntschy.tsc.entity.DO.RealEstate">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS ROWNO, TEMP.*
+            FROM (
+                SELECT AREA, YEAR, TOTAL_ABS AS TOTAL
+                FROM REAL_ESTATE_NEW_CONSTRUCTION
+                WHERE AREA='南通' AND MONTH='12月份'
+                ORDER BY YEAR DESC
+            ) TEMP
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 10
+    </select>
+
+    <select id="getConstructionList" resultType="com.ntschy.tsc.entity.DO.RealEstate">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS ROWNO, TEMP.*
+            FROM (
+                SELECT AREA, YEAR, TOTAL_ABS AS TOTAL
+                FROM REAL_ESTATE_CONSTRUCTION
+                WHERE AREA='南通' AND MONTH='12月份'
+                ORDER BY YEAR DESC
+            ) TEMP
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 10
+    </select>
+
+    <select id="getCompleteList" resultType="com.ntschy.tsc.entity.DO.RealEstate">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS ROWNO, TEMP.*
+            FROM (
+                SELECT AREA, YEAR, TOTAL_ABS AS TOTAL
+                FROM REAL_ESTATE_BUILD_COMPLETED
+                WHERE AREA='南通' AND MONTH='12月份'
+                ORDER BY YEAR DESC
+            ) TEMP
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 10
+    </select>
+
+    <select id="getSaleList" resultType="com.ntschy.tsc.entity.DO.RealEstate">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS ROWNO, TEMP.*
+            FROM (
+                SELECT AREA, YEAR, TOTAL_ABS AS TOTAL
+                FROM REAL_ESTATE_SALE
+                WHERE AREA='南通' AND MONTH='12月份'
+                ORDER BY YEAR DESC
+            ) TEMP
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 10
+    </select>
+
+</mapper>
