@@ -16,7 +16,7 @@
                     TERTIARY_INDUSTRY_ABS AS TERTIARY_INDUSTRY
                 FROM REGIONAL_GDP
                 WHERE AREA='南通'
-                ORDER BY YEAR DESC, GDP_ABS ASC
+                ORDER BY YEAR DESC, GDP_ABS DESC
             ) TEMP
         ) TABLE_ALIAS
         WHERE TABLE_ALIAS.ROWNO BETWEEN 1 AND 8
